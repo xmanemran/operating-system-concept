@@ -23,6 +23,10 @@ int main(int argc, char *argv[]) {
     }
     ftruncate(shm_file, sizeof(struct timeval));
 
+    struct timeval *start_time;
+    start_time = (struct timeval *) mmap(0, sizeof(struct timeval),  PROT_WRITE, MAP_SHARED, shm_file, 0);
+    gettimeofday(start_time,  NULL);
+
     pid_t pid;
 
     if(0 > (pid = fork())){
@@ -32,15 +36,12 @@ int main(int argc, char *argv[]) {
 
     if(pid > 0){
         wait(NULL);
-        struct timeval *start_time;
         struct timeval current_time;
         gettimeofday(&current_time,  NULL);
-        start_time = (struct timeval *) mmap(0, sizeof(struct timeval), PROT_READ, MAP_SHARED, shm_file, 0);
-        printf("Elapsed time: %ld", current_time.tv_usec  - start_time->tv_usec);
+
+        printf("Elapsed time: %d", current_time.tv_usec  - start_time->tv_usec);
     } else {
-        struct timeval *current_time;
-        current_time = (struct timeval *) mmap(0, sizeof(struct timeval),  PROT_WRITE, MAP_SHARED, shm_file, 0);
-        gettimeofday(current_time,  NULL);
+
         execlp(argv[1], argv[2], NULL);
     }
 
