@@ -28,7 +28,7 @@ public class Server {
 
     public static void main(String[] args) {
         try{
-            ServerSocket socket = new ServerSocket(6017);
+            ServerSocket socket = new ServerSocket(5575);
 
             while(true){
                 Server main = new Server();
