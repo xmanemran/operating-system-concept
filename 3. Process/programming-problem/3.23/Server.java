@@ -32,7 +32,7 @@ public class Main {
     }
 
     int getRandomNumber(){
-        return ThreadLocalRandom.current().nextInt(0, this.quote.length - 1);
+        return ThreadLocalRandom.current().nextInt(0, this.quote.length);
     }
 
     String getRandomQuote(){
